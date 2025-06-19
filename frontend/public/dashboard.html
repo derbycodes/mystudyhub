@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - My Study Hub</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="./styles/main.css">
+</head>
+<body class="bg-gray-100">
+    <header class="bg-blue-600 text-white p-4">
+        <h1 class="text-3xl font-bold">My Study Hub</h1>
+    </header>
+    <main class="container mx-auto mt-5">
+        <section class="text-center">
+            <h2 class="text-2xl font-semibold">Dashboard</h2>
+            <p class="mt-2">Track your study subjects and progress.</p>
+        </section>
+        <section class="mt-5">
+            <h3 class="text-xl font-semibold">Your Study Goals</h3>
+            <div id="study-goals" class="mt-3">
+                <!-- Dynamic content for study goals will be injected here -->
+            </div>
+            <form id="goal-form" class="mt-5">
+                <input type="text" id="goal-input" placeholder="Add a new study goal" class="border p-2 rounded w-full" required>
+                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded mt-2">Add Goal</button>
+            </form>
+        </section>
+        <section class="mt-5">
+            <h3 class="text-xl font-semibold">Hours Spent</h3>
+            <div id="hours-tracking" class="mt-3">
+                <!-- Dynamic content for hours tracking will be injected here -->
+            </div>
+        </section>
+        <section class="mt-5">
+            <h3 class="text-xl font-semibold">Your Notes</h3>
+            <a href="./notes.html" class="bg-green-500 text-white px-4 py-2 rounded">Manage Notes</a>
+        </section>
+    </main>
+    <footer class="bg-gray-800 text-white text-center p-4 mt-5">
+        <p>&copy; 2023 My Study Hub. All rights reserved.</p>
+    </footer>
+    <script>
+        // JavaScript to handle dynamic content and form submissions will go here
+    </script>
+</body>
+</html>

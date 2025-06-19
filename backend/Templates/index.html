@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Study Hub</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="./styles/main.css">
+    <style>
+        .hero-bg {
+            background-image: linear-gradient(rgba(59, 130, 246, 0.7), rgba(168, 85, 247, 0.7)), url('https://images.unsplash.com/photo-1513258496099-48168024aec0?auto=format&fit=crop&w=1200&q=80');
+            background-size: cover;
+            background-position: center;
+        }
+        .fade-in {
+            animation: fadeIn 1.5s ease-in;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(40px);}
+            to { opacity: 1; transform: translateY(0);}
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-blue-100 via-purple-100 to-pink-100 min-h-screen flex flex-col">
+    <header class="bg-gradient-to-r from-blue-600 to-purple-600 text-white p-6 shadow-lg">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-4xl font-extrabold tracking-wide drop-shadow-lg">MyStudyHub</h1>
+            <nav>
+                <a href="{{ url_for('home') }}" class="text-white px-4 py-2 rounded mx-2 transition transform hover:scale-105 shadow">Home</a>
+                <a href="{{ url_for('login') }}" class="bg-blue-500 hover:bg-blue-700 text-white px-4 py-2 rounded mx-2 transition transform hover:scale-105 shadow">Login</a>
+                <a href="{{ url_for('register') }}" class="bg-green-500 hover:bg-green-700 text-white px-4 py-2 rounded mx-2 transition transform hover:scale-105 shadow">Register</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero-bg flex flex-col items-center justify-center text-center py-24 fade-in">
+        <h2 class="text-5xl md:text-6xl font-extrabold text-white mb-4 drop-shadow-lg">Unlock Your Potential</h2>
+        <p class="text-xl md:text-2xl text-white mb-8 max-w-2xl mx-auto drop-shadow">Organize your studies, set goals, track your progress, and take smart notes—all in one beautiful hub.</p>
+        <a href="{{ url_for('register') }}" class="bg-gradient-to-r from-blue-500 to-purple-500 hover:from-purple-500 hover:to-blue-500 text-white px-8 py-3 rounded-full font-bold text-lg shadow-lg transition transform hover:scale-110">Get Started</a>
+    </section>
+
+    <!-- Features Section -->
+    <section class="container mx-auto px-4 py-16">
+        <div class="grid md:grid-cols-3 gap-8">
+            <div class="bg-white bg-opacity-90 rounded-xl shadow-xl p-8 flex flex-col items-center hover:shadow-2xl transition fade-in">
+                <span class="text-4xl mb-4 text-blue-500">🎯</span>
+                <h3 class="font-bold text-2xl mb-2 text-blue-700">Set Study Goals</h3>
+                <p class="text-gray-600">Define your targets for each subject and stay motivated with clear milestones.</p>
+            </div>
+            <div class="bg-white bg-opacity-90 rounded-xl shadow-xl p-8 flex flex-col items-center hover:shadow-2xl transition fade-in" style="animation-delay: 0.2s;">
+                <span class="text-4xl mb-4 text-purple-500">⏰</span>
+                <h3 class="font-bold text-2xl mb-2 text-purple-700">Track Progress</h3>
+                <p class="text-gray-600">Long hours, visualize your study time, and review your achievements with interactive charts.</p>
+            </div>
+            <div class="bg-white bg-opacity-90 rounded-xl shadow-xl p-8 flex flex-col items-center hover:shadow-2xl transition fade-in" style="animation-delay: 0.4s;">
+                <span class="text-4xl mb-4 text-pink-500">📝</span>
+                <h3 class="font-bold text-2xl mb-2 text-pink-700">Smart Notes</h3>
+                <p class="text-gray-600">Take, organize, and search your notes. Never lose track of important ideas again.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- About/Call to Action -->
+    <section class="bg-gradient-to-r from-blue-50 to-purple-100 py-12">
+        <div class="container mx-auto text-center">
+            <h4 class="text-2xl font-bold text-blue-700 mb-4">Why My Study Hub?</h4>
+            <p class="text-gray-700 max-w-2xl mx-auto mb-6">
+                Built by a student for students, My Study Hub combines modern design with practical features to help you excel in your studies. Whether you're tracking French vocabulary, solving calculus problems, or writing code, this hub is your smart companion.
+            </p>
+            <a href="{{ url_for('login') }}" class="inline-block bg-blue-600 hover:bg-purple-600 text-white px-6 py-3 rounded-full font-semibold shadow-lg transition transform hover:scale-105">Already have an account? Login</a>
+        </div>
+    </section>
+
+    <footer class="bg-gray-900 text-white text-center p-4 mt-10">
+        <p>&copy; 2025 Dee Study Hub. Made by Deborah.</p>
+    </footer>
+</body>
+</html>

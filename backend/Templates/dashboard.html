@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | My Study Hub</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        .glass {
+            background: rgba(255,255,255,0.85);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.18);
+            backdrop-filter: blur(6px);
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-blue-100 via-purple-100 to-pink-100 min-h-screen flex flex-col">
+    <header class="bg-gradient-to-r from-blue-600 to-purple-600 text-white p-6 shadow-lg">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-3xl font-extrabold tracking-wide">My Study Hub</h1>
+            <nav>
+                <a href="{{ url_for('home') }}" class="bg-white text-blue-600 px-4 py-2 rounded mx-2 font-semibold hover:bg-blue-100 transition">Home</a>
+                <a href="{{ url_for('logout') }}" class="bg-blue-500 hover:bg-blue-700 text-white px-4 py-2 rounded mx-2 transition">Logout</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="flex-1 container mx-auto px-4 py-10">
+        <div class="grid md:grid-cols-2 gap-8">
+            <!-- Study Goals Section -->
+            <section class="glass rounded-xl shadow-xl p-8">
+                <h2 class="text-2xl font-bold text-purple-700 mb-4 flex items-center">
+                    <span class="mr-2">🎯</span> Study Goals
+                </h2>
+                <form action="{{ url_for('add_goal') }}" method="POST" class="flex flex-col md:flex-row gap-4 mb-6">
+                    <input type="text" name="subject" placeholder="Subject" required class="flex-1 px-4 py-2 border border-purple-200 rounded focus:outline-none focus:ring-2 focus:ring-purple-400 transition">
+                    <input type="number" name="hours_spent" placeholder="Hours" min="1" required class="w-32 px-4 py-2 border border-purple-200 rounded focus:outline-none focus:ring-2 focus:ring-purple-400 transition">
+                    <button type="submit" class="bg-gradient-to-r from-purple-500 to-pink-500 text-white font-bold px-6 py-2 rounded shadow-lg hover:scale-105 transition">Add Goal</button>
+                </form>
+                <!-- Example goals table (replace with dynamic data in Flask) -->
+                <div class="overflow-x-auto">
+                    <table class="min-w-full text-center">
+                        <thead>
+                            <tr>
+                                <th class="py-2 px-4 text-blue-600">Subject</th>
+                                <th class="py-2 px-4 text-blue-600">Hours Spent</th>
+                                <th class="py-2 px-4 text-blue-600">Progress</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for goal in goals %}
+                            <tr class="hover:bg-blue-50">
+                                <td class="py-2 px-4">{{ goal.subject }}</td>
+                                <td class="py-2 px-4">{{ goal.hours_spent }}</td>
+                                <td class="py-2 px-4">
+                                    <div class="w-32 bg-purple-100 rounded-full h-3">
+                                        <div class="bg-gradient-to-r from-purple-500 to-pink-500 h-3 rounded-full"
+                                             style="width: 60%"></div>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Notes Section -->
+            <section class="glass rounded-xl shadow-xl p-8 flex flex-col">
+                <h2 class="text-2xl font-bold text-pink-700 mb-4 flex items-center">
+                    <span class="mr-2">📝</span> Your Notes
+                </h2>
+                <form action="{{ url_for('add_note') }}" method="POST" class="mb-6">
+                    <textarea name="content" class="w-full h-32 p-3 border border-pink-200 rounded focus:outline-none focus:ring-2 focus:ring-pink-400 transition mb-4" placeholder="Write your notes here..." required></textarea>
+                    <button type="submit" class="bg-gradient-to-r from-pink-500 to-purple-500 text-white font-bold px-6 py-2 rounded shadow-lg hover:scale-105 transition">Save Note</button>
+                </form>
+                <!-- Example notes list (replace with dynamic data in Flask) -->
+                <div>
+                    <h4 class="font-semibold text-gray-700 mb-2">Previous Notes:</h4>
+                    <ul class="list-disc list-inside text-gray-600 space-y-1 max-h-40 overflow-y-auto">
+                        {% for note in notes %}
+        <li>{{ note.content }}</li>
+    {% endfor %}
+</ul>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer class="bg-gray-900 text-white text-center p-4 mt-10">
+        <p>&copy; 2025 My Study Hub. Made by Deborah.</p>
+    </footer>
+</body>
+</html>
