@@ -1,69 +1,64 @@
-<<<<<<< HEAD
-# My Study Hub
+# My Study Hub Backend Documentation
 
-My Study Hub is a web application designed to help students track their study sessions, set goals, and manage their notes effectively. The application is built using Flask for the backend and Tailwind CSS for the frontend, ensuring a responsive and visually appealing user experience.
+## Overview
+My Study Hub is a web application designed to help students track their study sessions, set goals, and manage notes effectively. This backend documentation provides details on how to set up and use the backend components of the application.
 
 ## Features
-
-- User authentication (Login/Register)
-- Dashboard for tracking study subjects and hours spent
-- Ability to set and manage study goals
-- Notes section for creating, reading, updating, and deleting notes
-- Responsive design using Tailwind CSS
-
-## Project Structure
-
-```
-my-study-hub
-├── backend
-│   ├── app.py                # Main entry point for the Flask application
-│   ├── models.py             # Database models using SQLAlchemy
-│   ├── forms.py              # Forms for user registration, login, and study goals
-│   ├── database.db           # SQLite database file
-│   ├── requirements.txt       # Python dependencies
-│   └── README.md             # Documentation for the backend
-├── frontend
-│   ├── public
-│   │   ├── index.html        # Homepage of the application
-│   │   ├── login.html        # Login form
-│   │   ├── register.html     # Registration form
-│   │   ├── dashboard.html     # User dashboard
-│   │   ├── notes.html        # Notes management
-│   │   └── styles
-│   │       ├── main.css      # Custom CSS styles
-│   │       └── tailwind.css  # Tailwind CSS framework
-│   └── README.md             # Documentation for the frontend
-└── README.md                 # Overview of the entire project
-```
+- User authentication (registration and login)
+- Adding and tracking study goals
+- Managing notes (create, read, update, delete)
+- SQLite database for data storage
 
 ## Setup Instructions
 
-### Backend
+### Prerequisites
+- Python 3.x
+- pip (Python package installer)
 
-1. Navigate to the `backend` directory.
-2. Install the required dependencies:
+### Installation
+1. Clone the repository:
+   ```
+   git clone <repository-url>
+   cd my-study-hub/backend
+   ```
+
+2. Install the required packages:
    ```
    pip install -r requirements.txt
    ```
-3. Run the Flask application:
+
+### Running the Application
+1. Set the environment variable for Flask:
+   - On Windows:
+     ```
+     set FLASK_APP=app.py
+     ```
+   - On macOS/Linux:
+     ```
+     export FLASK_APP=app.py
+     ```
+
+2. Run the Flask application:
    ```
-   python app.py
+   flask run
    ```
 
-### Frontend
+3. Access the application in your web browser at `http://127.0.0.1:5000`.
 
-1. Navigate to the `frontend/public` directory.
-2. Open `index.html` in your web browser to view the application.
+## Database
+The application uses SQLite for data storage. The database file is located at `backend/database.db`. The following tables are created:
+- Users: Stores user information for authentication.
+- StudyGoals: Stores study goals set by users.
+- Notes: Stores notes created by users.
 
 ## Usage
-
-- Register a new account or log in to access your dashboard.
-- Track your study hours and set goals for each subject.
-- Manage your notes in the dedicated notes section.
+- **User Registration**: Navigate to the registration page to create a new account.
+- **User Login**: Use the login page to authenticate and access the dashboard.
+- **Dashboard**: After logging in, users can view their study goals and notes.
+- **Notes Management**: Users can create, read, update, and delete notes from the notes section.
 
 ## Contributing
+Contributions are welcome! Please submit a pull request or open an issue for any enhancements or bug fixes.
 
-Feel free to contribute to the project by submitting issues or pull requests. Your feedback and suggestions are welcome!
-=======
-# mystudyhub
->>>>>>> 56215b702abf0ddd93d4a2e2ec9074c9a217c626
+## License
+This project is licensed under the MIT License. See the LICENSE file for more details.

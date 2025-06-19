@@ -2,11 +2,15 @@ from flask import Flask, render_template, redirect, url_for, request, flash, ses
 from forms import RegistrationForm, LoginForm, StudyGoalForm, NoteForm
 from models import db, User, StudyGoal, Note  # Import db from models.py
 from werkzeug.security import generate_password_hash, check_password_hash
+import secrets
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'your_secret_key'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 db.init_app(app)  # Initialize db with app
+
+# Generate a random secret key
+app.config['SECRET_KEY'] = secrets.token_hex(16)
 
 @app.route('/')
 def home():
