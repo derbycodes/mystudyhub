@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # My Study Hub
 
 My Study Hub is a web application designed to help students track their study sessions, set goals, and manage their notes effectively. The application is built using Flask for the backend and Tailwind CSS for the frontend, ensuring a responsive and visually appealing user experience.
@@ -63,3 +64,6 @@ my-study-hub
 ## Contributing
 
 Feel free to contribute to the project by submitting issues or pull requests. Your feedback and suggestions are welcome!
+=======
+# mystudyhub
+>>>>>>> 56215b702abf0ddd93d4a2e2ec9074c9a217c626
