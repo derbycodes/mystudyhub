@@ -1,0 +1,26 @@
+<header class="bg-gradient-to-r from-blue-600 to-purple-600 text-white p-6 shadow-lg">
+  <div class="container mx-auto flex justify-between items-center">
+    <h1 class="text-4xl font-extrabold tracking-wide drop-shadow-lg">MyStudyHub</h1>
+    <!-- Hamburger Button (mobile only) -->
+    <button id="menu-btn" class="md:hidden flex flex-col justify-center items-center w-10 h-10" aria-label="Open Menu">
+      <span class="block w-8 h-1 bg-white mb-1 rounded"></span>
+      <span class="block w-8 h-1 bg-white mb-1 rounded"></span>
+      <span class="block w-8 h-1 bg-white rounded"></span>
+    </button>
+    <!-- Navigation Links -->
+    <nav id="nav-menu" class="hidden absolute top-20 right-6 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg shadow-lg p-4 z-50 md:static md:flex md:items-center md:gap-4 md:bg-none md:shadow-none md:p-0">
+      <a href="/" class="block px-4 py-2 rounded hover:bg-blue-700 md:hover:bg-transparent">Home</a>
+      <a href="/login" class="block px-4 py-2 rounded hover:bg-blue-700 md:hover:bg-transparent">Login</a>
+      <a href="/register" class="block px-4 py-2 rounded hover:bg-blue-700 md:hover:bg-transparent">Register</a>
+    </nav>
+  </div>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const menuBtn = document.getElementById('menu-btn');
+      const navMenu = document.getElementById('nav-menu');
+      menuBtn.addEventListener('click', () => {
+        navMenu.classList.toggle('hidden');
+      });
+    });
+  </script>
+</header>
