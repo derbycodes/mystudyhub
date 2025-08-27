@@ -1,20 +1,18 @@
-from flask import Flask, render_template, redirect, url_for, request, flash, session
+from flask import Flask, render_template, redirect, url_for, request, flash
 from forms import RegistrationForm, LoginForm, StudyGoalForm, NoteForm
-from models import db, User, StudyGoal, Note  # Import db from models.py
+from models import db, User, StudyGoal, Note
 from werkzeug.security import generate_password_hash, check_password_hash
 import secrets
-from flask_login import LoginManager, current_user, login_required
+from flask_login import LoginManager, current_user, login_required, login_user, logout_user
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'your_secret_key'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
-db.init_app(app)  # Initialize db with app
-
-# Generate a random secret key
 app.config['SECRET_KEY'] = secrets.token_hex(16)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
+db.init_app(app)
 
 login_manager = LoginManager()
 login_manager.init_app(app)
+login_manager.login_view = 'login'  # Ensures @login_required redirects to login
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -31,10 +29,10 @@ def login():
         password = request.form['password']
         user = User.query.filter_by(username=username).first()
         if user and check_password_hash(user.password, password):
-            session['user_id'] = user.id
-            return redirect(url_for('dashboard'))  # Redirects to dashboard
+            login_user(user)
+            return redirect(url_for('dashboard'))
         else:
-            flash('Login failed. Check username and password.', 'danger')
+            flash('Invalid credentials', 'danger')
     return render_template('login.html')
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -42,12 +40,10 @@ def register():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-        # Check if user already exists
         existing_user = User.query.filter_by(username=username).first()
         if existing_user:
             flash('Username already exists. Please choose another.', 'danger')
             return render_template('register.html')
-        # Create new user
         hashed_password = generate_password_hash(password)
         new_user = User(username=username, password=hashed_password)
         db.session.add(new_user)
@@ -64,36 +60,32 @@ def dashboard():
     return render_template('dashboard.html', notes=user_notes, goals=goals)
 
 @app.route('/add_goal', methods=['POST'])
+@login_required
 def add_goal():
-    if 'user_id' not in session:
-        return redirect(url_for('login'))
     subject = request.form['subject']
     hours_spent = request.form['hours_spent']
-    # Save to database
-    new_goal = StudyGoal(subject=subject, hours_spent=hours_spent, user_id=session['user_id'])
+    new_goal = StudyGoal(subject=subject, hours_spent=hours_spent, user_id=current_user.id)
     db.session.add(new_goal)
     db.session.commit()
     flash('Study goal added!', 'success')
     return redirect(url_for('dashboard'))
 
 @app.route('/add_note', methods=['POST'])
+@login_required
 def add_note():
-    if 'user_id' not in session:
-        return redirect(url_for('login'))
     content = request.form['content']
-    topic = request.form['topic']  # Get the selected topic from the form
-    new_note = Note(content=content, topic=topic, user_id=session['user_id'])
+    topic = request.form['topic']
+    new_note = Note(content=content, topic=topic, user_id=current_user.id)
     db.session.add(new_note)
     db.session.commit()
     flash('Note added!', 'success')
     return redirect(url_for('dashboard'))
 
 @app.route('/delete_note/<int:note_id>', methods=['POST'])
+@login_required
 def delete_note(note_id):
-    if 'user_id' not in session:
-        return redirect(url_for('login'))
     note = Note.query.get_or_404(note_id)
-    if note.user_id != session['user_id']:
+    if note.user_id != current_user.id:
         flash('You are not authorized to delete this note.', 'danger')
         return redirect(url_for('dashboard'))
     db.session.delete(note)
@@ -102,8 +94,9 @@ def delete_note(note_id):
     return redirect(url_for('dashboard'))
 
 @app.route('/logout')
+@login_required
 def logout():
-    session.pop('user_id', None)
+    logout_user()
     flash('You have been logged out.', 'info')
     return redirect(url_for('home'))
 
