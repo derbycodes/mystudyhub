@@ -3,6 +3,7 @@ from forms import RegistrationForm, LoginForm, StudyGoalForm, NoteForm
 from models import db, User, StudyGoal, Note  # Import db from models.py
 from werkzeug.security import generate_password_hash, check_password_hash
 import secrets
+from flask_login import LoginManager, current_user, login_required
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'your_secret_key'
@@ -11,6 +12,13 @@ db.init_app(app)  # Initialize db with app
 
 # Generate a random secret key
 app.config['SECRET_KEY'] = secrets.token_hex(16)
+
+login_manager = LoginManager()
+login_manager.init_app(app)
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
 
 @app.route('/')
 def home():
@@ -49,12 +57,11 @@ def register():
     return render_template('register.html')
 
 @app.route('/dashboard')
+@login_required
 def dashboard():
-    if 'user_id' not in session:
-        return redirect(url_for('login'))
-    goals = StudyGoal.query.filter_by(user_id=session['user_id']).all()
-    notes = Note.query.filter_by(user_id=session['user_id']).all()
-    return render_template('dashboard.html', goals=goals, notes=notes)
+    goals = StudyGoal.query.filter_by(user_id=current_user.id).all()
+    user_notes = Note.query.filter_by(user_id=current_user.id).all()
+    return render_template('dashboard.html', notes=user_notes, goals=goals)
 
 @app.route('/add_goal', methods=['POST'])
 def add_goal():
@@ -74,10 +81,24 @@ def add_note():
     if 'user_id' not in session:
         return redirect(url_for('login'))
     content = request.form['content']
-    new_note = Note(content=content, user_id=session['user_id'])
+    topic = request.form['topic']  # Get the selected topic from the form
+    new_note = Note(content=content, topic=topic, user_id=session['user_id'])
     db.session.add(new_note)
     db.session.commit()
     flash('Note added!', 'success')
+    return redirect(url_for('dashboard'))
+
+@app.route('/delete_note/<int:note_id>', methods=['POST'])
+def delete_note(note_id):
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
+    note = Note.query.get_or_404(note_id)
+    if note.user_id != session['user_id']:
+        flash('You are not authorized to delete this note.', 'danger')
+        return redirect(url_for('dashboard'))
+    db.session.delete(note)
+    db.session.commit()
+    flash('Note deleted!', 'success')
     return redirect(url_for('dashboard'))
 
 @app.route('/logout')
