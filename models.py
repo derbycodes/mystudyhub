@@ -25,8 +25,8 @@ class StudyGoal(db.Model):
 class Note(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     content = db.Column(db.Text, nullable=False)
-    topic = db.Column(db.String(120), nullable=False)  # Add this field
-    timestamp = db.Column(db.DateTime, default=datetime.utcnow)  # Add this field
+    topic = db.Column(db.String(120), nullable=False)
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
     def __repr__(self):
