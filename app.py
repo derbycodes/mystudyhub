@@ -71,9 +71,17 @@ def register():
 @app.route('/dashboard')
 @login_required
 def dashboard():
-    goals = StudyGoal.query.filter_by(user_id=current_user.id).all()
+    # Get all notes for the logged-in user
     user_notes = Note.query.filter_by(user_id=current_user.id).all()
-    return render_template('dashboard.html', notes=user_notes, goals=goals)
+    # Get all study goals for the logged-in user
+    study_goals = StudyGoal.query.filter_by(user_id=current_user.id).all()
+
+    return render_template(
+        'dashboard.html',
+        user=current_user,
+        notes=user_notes,
+        study_goals=study_goals
+    )
 
 @app.route('/add_goal', methods=['POST'])
 @login_required
