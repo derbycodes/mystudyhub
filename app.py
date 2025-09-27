@@ -2,21 +2,33 @@ from flask import Flask, render_template, redirect, url_for, request, flash
 from forms import RegistrationForm, LoginForm, StudyGoalForm, NoteForm
 from models import db, User, StudyGoal, Note
 from werkzeug.security import generate_password_hash, check_password_hash
-import secrets
 from flask_login import LoginManager, current_user, login_required, login_user, logout_user
+import os
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = secrets.token_hex(16)
+
+# Use a fixed secret key (or load from environment for production)
+app.config['SECRET_KEY'] = os.environ.get("SECRET_KEY", "my_super_secret_key")
+
+# Database setup (SQLite for now; can switch to Postgres on Render later)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db.init_app(app)
 
+# Ensure tables exist
+with app.app_context():
+    db.create_all()
+
+# Flask-Login setup
 login_manager = LoginManager()
 login_manager.init_app(app)
-login_manager.login_view = 'login'  # Ensures @login_required redirects to login
+login_manager.login_view = 'login'  # Redirects to login page if not logged in
 
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
+
+# ------------------ Routes ------------------
 
 @app.route('/')
 def home():
@@ -40,16 +52,20 @@ def register():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
+
         existing_user = User.query.filter_by(username=username).first()
         if existing_user:
             flash('Username already exists. Please choose another.', 'danger')
             return render_template('register.html')
+
         hashed_password = generate_password_hash(password)
         new_user = User(username=username, password=hashed_password)
         db.session.add(new_user)
         db.session.commit()
+
         flash('Registration successful! Please log in.', 'success')
         return redirect(url_for('login'))
+
     return render_template('register.html')
 
 @app.route('/dashboard')
@@ -88,6 +104,7 @@ def delete_note(note_id):
     if note.user_id != current_user.id:
         flash('You are not authorized to delete this note.', 'danger')
         return redirect(url_for('dashboard'))
+
     db.session.delete(note)
     db.session.commit()
     flash('Note deleted!', 'success')
@@ -100,5 +117,6 @@ def logout():
     flash('You have been logged out.', 'info')
     return redirect(url_for('home'))
 
+# ------------------ Run ------------------
 if __name__ == '__main__':
     app.run(debug=True)
